@@ -1,10 +1,11 @@
 package br.com.sigabem.service.impl;
 
-import br.com.sigabem.adapters.CalculoFreteDTOAdapter;
 import br.com.sigabem.adapters.CalculoFreteEntityAdapter;
+import br.com.sigabem.adapters.CalculoFreteDTOAdapter;
 import br.com.sigabem.db.entity.CalculoFreteEntity;
 import br.com.sigabem.dto.request.CalculoFreteDTO;
 import br.com.sigabem.dto.response.MessageResponseDTO;
+import br.com.sigabem.service.entity.CalculoFrete;
 import br.com.sigabem.service.exception.CalculoFreteException;
 import br.com.sigabem.db.contracts.CalculoFreteRepository;
 import br.com.sigabem.service.CalculoFreteService;
@@ -22,6 +23,7 @@ import static br.com.sigabem.service.util.JsonReader.readJsonFromUrl;
 public class CalculoFreteServiceImpl implements CalculoFreteService {
 
     private final CalculoFreteRepository calculoFreteRepository;
+    private CalculoFrete calculoFrete;
 
     @Autowired
     private CalculoFreteServiceImpl(CalculoFreteRepository calculoFreteRepository){
@@ -41,11 +43,10 @@ public class CalculoFreteServiceImpl implements CalculoFreteService {
 
     @Override
     public MessageResponseDTO createCalculoFrete(CalculoFreteDTO calculoFreteDTO) throws JSONException, IOException {
-        CalculoFreteEntity calculoFreteEntity = verifyCepsExists(calculoFreteDTO.getCepOrigem(),calculoFreteDTO.getCepDestino());
-        CalculoFreteDTOAdapter calculoFreteDTOAdapter = new CalculoFreteDTOAdapter(calculoFreteEntity);
-        calculoFreteDTO = calculoFreteDTOAdapter.getCalculoFreteDTO();
-        CalculoFreteEntity savedCalculoFrete = calculoFreteRepository.save(new CalculoFreteEntityAdapter(calculoFreteDTO).getCalculoFreteEntity());
-        return createMessageResponse(savedCalculoFrete.getId(), "Criado Calculo Frete com id ");
+        CalculoFreteEntity calculoFreteEntity = verifyCepsExists(calculoFreteDTO.getCepOrigem(),calculoFreteDTO.getCepDestino(), calculoFreteDTO);
+        calculoFreteDTO = new CalculoFreteDTOAdapter(calculoFreteEntity).getCalculoFreteDTO();
+        CalculoFreteEntity savedCalculoFreteEntity = calculoFreteRepository.save(new CalculoFreteEntityAdapter(calculoFreteDTO).getCalculoFreteEntity());
+        return createMessageResponse(savedCalculoFreteEntity.getId(), "Criado Calculo Frete com id ");
     }
 
 
@@ -59,8 +60,8 @@ public class CalculoFreteServiceImpl implements CalculoFreteService {
     @Override
     public MessageResponseDTO updateById(Long id, CalculoFreteDTO calculoFreteDTO) throws CalculoFreteException {
         verifyIdExists(id);
-        CalculoFreteEntity updatedCalculoFrete = calculoFreteRepository.save(new CalculoFreteEntityAdapter(calculoFreteDTO).getCalculoFreteEntity());
-        return createMessageResponse(updatedCalculoFrete.getId(), "Atualizado Calculo Frete com id ");
+        CalculoFreteEntity updatedCalculoFreteEntity = calculoFreteRepository.save(new CalculoFreteEntityAdapter(calculoFreteDTO).getCalculoFreteEntity());
+        return createMessageResponse(updatedCalculoFreteEntity.getId(), "Atualizado Calculo Frete com id ");
     }
 
 
@@ -68,43 +69,42 @@ public class CalculoFreteServiceImpl implements CalculoFreteService {
         calculoFreteRepository.findById(id).orElseThrow(() -> new CalculoFreteException(id));
     }
 
-    private CalculoFreteEntity freteDDDIgual(CalculoFreteEntity calculoFreteEntity){
+    private CalculoFreteEntity freteDDDIgual(CalculoFreteDTO calculoFreteDTO){
         return CalculoFreteEntity.builder()
-                .cepOrigem(calculoFreteEntity.getCepOrigem())
-                .cepDestino(calculoFreteEntity.getCepDestino())
-                .vlTotalFrete(calculoFreteEntity.getPeso()*0.50)
+                .cepOrigem(calculoFreteDTO.getCepOrigem())
+                .cepDestino(calculoFreteDTO.getCepDestino())
+                .vlTotalFrete(calculoFreteDTO.getPeso()*0.50)
                 .dataPrevistaEntrega(LocalDate.now().plusDays(1))
                 .build();
     }
 
-    private CalculoFreteEntity freteEstadoIgual(CalculoFreteEntity calculoFreteEntity){
+    private CalculoFreteEntity freteEstadoIgual(CalculoFreteDTO calculoFreteDTO){
         return CalculoFreteEntity.builder()
-                .cepOrigem(calculoFreteEntity.getCepOrigem())
-                .cepDestino(calculoFreteEntity.getCepDestino())
-                .vlTotalFrete(calculoFreteEntity.getPeso()-calculoFreteEntity.getPeso()*0.75)
+                .cepOrigem(calculoFreteDTO.getCepOrigem())
+                .cepDestino(calculoFreteDTO.getCepDestino())
+                .vlTotalFrete(calculoFreteDTO.getPeso()-calculoFreteDTO.getPeso()*0.75)
                 .dataPrevistaEntrega(LocalDate.now().plusDays(3))
                 .build();
     }
 
-    private CalculoFreteEntity freteEstadoDiferentes(CalculoFreteEntity calculoFreteEntity){
+    private CalculoFreteEntity freteEstadoDiferentes(CalculoFreteDTO calculoFreteDTO){
         return CalculoFreteEntity.builder()
-                .cepOrigem(calculoFreteEntity.getCepOrigem())
-                .cepDestino(calculoFreteEntity.getCepDestino())
-                .vlTotalFrete(calculoFreteEntity.getPeso())
+                .cepOrigem(calculoFreteDTO.getCepOrigem())
+                .cepDestino(calculoFreteDTO.getCepDestino())
+                .vlTotalFrete(calculoFreteDTO.getPeso())
                 .dataPrevistaEntrega(LocalDate.now().plusDays(10))
                 .build();
     }
 
-    private CalculoFreteEntity verifyCepsExists(String cepOrigem, String cepDestino) throws JSONException, IOException {
+    private CalculoFreteEntity verifyCepsExists(String cepOrigem, String cepDestino , CalculoFreteDTO calculoFreteDTO) throws JSONException, IOException {
         JSONObject origem = readJsonFromUrl("https://viacep.com.br/ws/"+cepOrigem+"/json/");
         JSONObject destino = readJsonFromUrl("https://viacep.com.br/ws/"+cepDestino+"/json/");
-        CalculoFreteEntity calculoFreteEntity = new CalculoFreteEntity();
         if(origem.getString("ddd").equals(destino.getString("ddd")) && origem.getString("uf").equals(destino.getString("uf"))){
-            return freteDDDIgual(calculoFreteEntity);
+            return freteDDDIgual(calculoFreteDTO);
         }else if(!origem.getString("ddd").equals(destino.getString("ddd")) && origem.getString("uf").equals(destino.getString("uf"))) {
-            return freteEstadoIgual(calculoFreteEntity);
+            return freteEstadoIgual(calculoFreteDTO);
         }else{
-           return  freteEstadoDiferentes(calculoFreteEntity);
+           return  freteEstadoDiferentes(calculoFreteDTO);
         }
     }
 

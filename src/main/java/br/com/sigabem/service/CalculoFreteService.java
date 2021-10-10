@@ -1,5 +1,6 @@
 package br.com.sigabem.service;
 
+import br.com.sigabem.db.entity.CalculoFreteEntity;
 import br.com.sigabem.dto.request.CalculoFreteDTO;
 import br.com.sigabem.dto.response.MessageResponseDTO;
 import br.com.sigabem.service.exception.CalculoFreteException;
