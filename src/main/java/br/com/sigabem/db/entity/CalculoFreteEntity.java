@@ -44,7 +44,7 @@ public class CalculoFreteEntity {
     private String nomeDestinatario;
 
     @Column(name="VALOR_TOTAL_FRETE")
-    private Double vlTotalFrete;
+    private String vlTotalFrete;
 
     @Column(name="DATA_PREVISTA_ENTREGA")
     private LocalDate dataPrevistaEntrega;

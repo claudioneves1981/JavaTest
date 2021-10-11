@@ -12,8 +12,25 @@ import java.util.List;
 public class CalculoFreteAdapter {
 
     private CalculoFrete calculoFrete;
+    private List<CalculoFrete> calculoFretes;
     public CalculoFreteAdapter(CalculoFreteDTO calculoFreteDTO){
         calculoFrete = converteCalculoFreteDTOParaCalculoFrete(calculoFreteDTO);
+    }
+
+    public CalculoFreteAdapter(List<CalculoFreteEntity> calculoFreteEntity){
+        calculoFretes= convertListCalculoFreteEntityParaListCalculoFrete(calculoFreteEntity);
+    }
+
+    public CalculoFreteAdapter(CalculoFreteEntity calculoFreteEntity){
+        calculoFrete = convertCalculoFreteEntityParaCalculoFrete(calculoFreteEntity);
+    }
+
+    public List<CalculoFrete> convertListCalculoFreteEntityParaListCalculoFrete(List<CalculoFreteEntity> calculoFretesEntity){
+        List<CalculoFrete> calculoFretes= new ArrayList<>();
+        for(CalculoFreteEntity calculoFreteEntity: calculoFretesEntity){
+            calculoFretes.add(convertCalculoFreteEntityParaCalculoFrete(calculoFreteEntity));
+        }
+        return calculoFretes;
     }
 
     private CalculoFrete converteCalculoFreteDTOParaCalculoFrete(CalculoFreteDTO calculoFreteDTO){
@@ -26,4 +43,16 @@ public class CalculoFreteAdapter {
                 .build();
     }
 
+    public CalculoFrete convertCalculoFreteEntityParaCalculoFrete(CalculoFreteEntity calculoFreteEntity) {
+        return CalculoFrete.builder()
+                .id(calculoFreteEntity.getId())
+                .peso(calculoFreteEntity.getPeso())
+                .cepOrigem(calculoFreteEntity.getCepOrigem())
+                .cepDestino(calculoFreteEntity.getCepDestino())
+                .nomeDestinatario(calculoFreteEntity.getNomeDestinatario())
+                .dataConsulta(calculoFreteEntity.getDataConsulta())
+                .vlTotalFrete(calculoFreteEntity.getVlTotalFrete())
+                .dataPrevistaEntrega(calculoFreteEntity.getDataPrevistaEntrega())
+                .build();
+    }
 }

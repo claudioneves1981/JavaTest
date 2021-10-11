@@ -24,7 +24,7 @@ public class CalculoFreteRepositoryAdapter {
                 .cepDestino(calculoFrete.getCepDestino())
                 .vlTotalFrete(calculoFrete.getVlTotalFrete())
                 .dataPrevistaEntrega(calculoFrete.getDataPrevistaEntrega())
-                .dataConsulta(LocalDate.now())
+                .dataConsulta(calculoFrete.getDataConsulta())
                 .nomeDestinatario(calculoFrete.getNomeDestinatario())
                 .build();
     }

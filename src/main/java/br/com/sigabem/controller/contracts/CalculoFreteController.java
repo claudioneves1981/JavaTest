@@ -1,5 +1,6 @@
 package br.com.sigabem.controller.contracts;
 
+import br.com.sigabem.controller.entity.CalculoFreteControllerEntity;
 import br.com.sigabem.dto.request.CalculoFreteDTO;
 import br.com.sigabem.dto.response.MessageResponseDTO;
 import br.com.sigabem.service.entity.CalculoFrete;
@@ -9,7 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface CalculoFreteController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Retornará uma mensagem amigável de erro para o usuário"),
     })
-    MessageResponseDTO createCalculoFrete(CalculoFreteDTO calculoFreteDTO) throws JSONException, IOException;
+    MessageResponseDTO createCalculoFrete(CalculoFreteControllerEntity calculoFreteControllerEntity) throws JSONException, IOException;
 
     @ApiOperation(value="Lista todos os fretes")
     @ApiResponses(value = {
@@ -30,7 +31,7 @@ public interface CalculoFreteController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Retornará uma mensagem amigável de erro para o usuário"),
     })
-    List<CalculoFreteDTO> listAll();
+    List<CalculoFreteControllerEntity> listAll();
 
     @ApiOperation(value="deleta frete pelo id")
     @ApiResponses(value = {
@@ -46,7 +47,7 @@ public interface CalculoFreteController {
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Retornará uma mensagem amigável de erro para o usuário"),
     })
-    MessageResponseDTO updateById(Long id, CalculoFreteDTO calculoFreteDTO) throws CalculoFreteException;
+    MessageResponseDTO updateById(Long id, CalculoFreteControllerEntity calculoFreteControllerEntity) throws CalculoFreteException;
 }
 
 

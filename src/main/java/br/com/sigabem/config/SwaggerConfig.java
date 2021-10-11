@@ -40,8 +40,7 @@ public class SwaggerConfig {
 
     private StringBuilder buildDescription(){
         StringBuilder text = new StringBuilder();
-        text.append("Um exemplo de aplicaçao Spring Boot REST API e documentada com Swagger");
-        text.append("Neste exemplo de skeleton estao sendo utilizadados Spring e Swagger");
+        text.append("Siga Bem Java Test API");
         return text;
     }
 }

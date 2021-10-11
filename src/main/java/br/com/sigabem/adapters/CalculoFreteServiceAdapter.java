@@ -1,7 +1,7 @@
 package br.com.sigabem.adapters;
 
+import br.com.sigabem.controller.entity.CalculoFreteControllerEntity;
 import br.com.sigabem.db.entity.CalculoFreteEntity;
-import br.com.sigabem.dto.request.CalculoFreteDTO;
 import br.com.sigabem.service.entity.CalculoFrete;
 import lombok.Data;
 
@@ -15,13 +15,12 @@ public class CalculoFreteServiceAdapter {
     private CalculoFrete calculoFrete;
     private List<CalculoFrete> calculoFretes;
 
-    public CalculoFreteServiceAdapter(CalculoFreteDTO calculoFreteDTO){ this.calculoFrete =
-            convertCalculoFreteDTOemCalculoFrete(calculoFreteDTO);
+    public CalculoFreteServiceAdapter(List<CalculoFreteEntity> calculoFreteEntityList){
+        this.calculoFretes = convertListEntityEmListCalculoFrete(calculoFreteEntityList);
     }
-    public CalculoFreteServiceAdapter(CalculoFreteEntity calculoFreteEntity){this.calculoFrete = convertCalculoFreteEntityEmCalculoFrete(calculoFreteEntity);}
 
-    public CalculoFreteServiceAdapter(List<CalculoFreteEntity> calculoFreteEntities){
-        calculoFretes = convertListEntityEmListCalculoFrete(calculoFreteEntities);
+    public CalculoFreteServiceAdapter(CalculoFreteControllerEntity calculoFreteControllerEntity){
+        this.calculoFrete = convertCalculoFreteControllerEntityEmCalculoFrete(calculoFreteControllerEntity);
     }
 
     private List<CalculoFrete> convertListEntityEmListCalculoFrete(List<CalculoFreteEntity> calculoFreteEntityList){
@@ -33,7 +32,6 @@ public class CalculoFreteServiceAdapter {
     }
 
     private CalculoFrete convertCalculoFreteEntityEmCalculoFrete(CalculoFreteEntity calculoFreteEntity){
-        System.out.print("Calculo Frete Service Adapter"+calculoFreteEntity.getPeso());
         return CalculoFrete.builder()
                 .id(calculoFreteEntity.getId())
                 .peso(calculoFreteEntity.getPeso())
@@ -41,18 +39,17 @@ public class CalculoFreteServiceAdapter {
                 .cepDestino(calculoFreteEntity.getCepDestino())
                 .vlTotalFrete(calculoFreteEntity.getVlTotalFrete())
                 .dataPrevistaEntrega(calculoFreteEntity.getDataPrevistaEntrega())
-                .dataConsulta(LocalDate.now())
+                .dataConsulta(calculoFreteEntity.getDataConsulta())
                 .nomeDestinatario(calculoFreteEntity.getNomeDestinatario())
                 .build();
     }
 
-    private CalculoFrete convertCalculoFreteDTOemCalculoFrete(CalculoFreteDTO calculoFreteDTO){
+    private CalculoFrete convertCalculoFreteControllerEntityEmCalculoFrete(CalculoFreteControllerEntity calculoFreteControllerEntity){
         return CalculoFrete.builder()
-                .id(calculoFreteDTO.getId())
-                .peso(calculoFreteDTO.getPeso())
-                .cepOrigem(calculoFreteDTO.getCepOrigem())
-                .cepDestino(calculoFreteDTO.getCepDestino())
-                .nomeDestinatario(calculoFreteDTO.getNomeDestinatario())
+                .peso(calculoFreteControllerEntity.getPeso())
+                .cepOrigem(calculoFreteControllerEntity.getCepOrigem())
+                .cepDestino(calculoFreteControllerEntity.getCepDestino())
+                .nomeDestinatario(calculoFreteControllerEntity.getNomeDestinatario())
                 .build();
     }
 }

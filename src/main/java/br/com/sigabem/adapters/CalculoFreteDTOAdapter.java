@@ -2,7 +2,6 @@ package br.com.sigabem.adapters;
 
 import br.com.sigabem.db.entity.CalculoFreteEntity;
 import br.com.sigabem.dto.request.CalculoFreteDTO;
-import br.com.sigabem.service.entity.CalculoFrete;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -22,11 +21,6 @@ public class CalculoFreteDTOAdapter {
         calculoFreteDTO = convertCalculoFreteEntityParaCalculoFreteDTO(calculoFreteEntity);
     }
 
-    public CalculoFreteDTOAdapter(CalculoFrete calculoFrete){
-        calculoFreteDTO = converteCalculoFreteParaCalculoFreteDTO(calculoFrete);
-    }
-
-
     public List<CalculoFreteDTO> convertListCalculoFreteEntityParaListCalculoFreteDTO(List<CalculoFreteEntity> calculoFretesEntity){
         List<CalculoFreteDTO> calculoFretesDTO = new ArrayList<>();
         for(CalculoFreteEntity calculoFreteEntity: calculoFretesEntity){
@@ -42,16 +36,6 @@ public class CalculoFreteDTOAdapter {
                 .cepOrigem(calculoFreteEntity.getCepOrigem())
                 .cepDestino(calculoFreteEntity.getCepDestino())
                 .nomeDestinatario(calculoFreteEntity.getNomeDestinatario())
-                .build();
-    }
-
-    public CalculoFreteDTO converteCalculoFreteParaCalculoFreteDTO(CalculoFrete calculoFrete){
-        return CalculoFreteDTO.builder()
-                .id(calculoFrete.getId())
-                .peso(calculoFrete.getPeso())
-                .cepOrigem(calculoFrete.getCepOrigem())
-                .cepDestino(calculoFrete.getCepDestino())
-                .nomeDestinatario(calculoFrete.getNomeDestinatario())
                 .build();
     }
 }

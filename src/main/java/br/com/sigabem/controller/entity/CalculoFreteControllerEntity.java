@@ -1,21 +1,18 @@
-package br.com.sigabem.dto.request;
+package br.com.sigabem.controller.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CalculoFreteDTO {
-
-    private Long id;
+public class CalculoFreteControllerEntity {
 
     @NotEmpty
     private Double peso;
@@ -31,11 +28,4 @@ public class CalculoFreteDTO {
     @NotEmpty
     @Size(min = 2, max = 100)
     private String nomeDestinatario;
-
-    private String vlTotalFrete;
-
-    private LocalDate dataPrevistaEntrega;
-    
-    private LocalDate dataConsulta;
-
 }

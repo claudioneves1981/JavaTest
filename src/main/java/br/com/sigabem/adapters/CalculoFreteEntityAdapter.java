@@ -5,7 +5,6 @@ import br.com.sigabem.dto.request.CalculoFreteDTO;
 import br.com.sigabem.service.entity.CalculoFrete;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +19,18 @@ public class CalculoFreteEntityAdapter {
         calculoFreteEntity = convertCalculoFreteDTOParaCalculoFreteEntity(calculoFreteDTO);
     }
 
-    private List<CalculoFreteEntity> convertListCalculoFreteParaListCalculoFreteEntity(List<CalculoFreteDTO> calculoFretesDTO){
+    public CalculoFreteEntityAdapter(CalculoFrete calculoFrete){
+        calculoFreteEntity = convertCalculoFreteParaCalculoFreteEntity(calculoFrete);
+    }
+
+    public CalculoFreteEntityAdapter(List<CalculoFrete> calculoFreteList) {
+        calculoFretesEntity = convertListCalculoFreteParaListCalculoFreteEntity(calculoFreteList);
+    }
+
+    private List<CalculoFreteEntity> convertListCalculoFreteParaListCalculoFreteEntity(List<CalculoFrete> calculoFreteList){
         List<CalculoFreteEntity> calculoFretesEntity = new ArrayList<>();
-        for(CalculoFreteDTO calculoFreteDTO: calculoFretesDTO){
-            calculoFretesEntity.add(convertCalculoFreteDTOParaCalculoFreteEntity(calculoFreteDTO));
+        for(CalculoFrete calculoFrete: calculoFreteList){
+            calculoFretesEntity.add(convertCalculoFreteParaCalculoFreteEntity(calculoFrete));
         }
         return calculoFretesEntity;
     }
@@ -31,7 +38,7 @@ public class CalculoFreteEntityAdapter {
     private CalculoFreteEntity convertCalculoFreteParaCalculoFreteEntity(CalculoFrete calculoFrete){
         return CalculoFreteEntity.builder()
                 .id(calculoFrete.getId())
-                .dataConsulta(LocalDate.now())
+                .dataConsulta(calculoFrete.getDataConsulta())
                 .vlTotalFrete(calculoFrete.getVlTotalFrete())
                 .dataPrevistaEntrega(calculoFrete.getDataPrevistaEntrega())
                 .peso(calculoFrete.getPeso())
