@@ -1,12 +1,9 @@
 package br.com.sigabem.controller.contracts.impl;
 
-import br.com.sigabem.adapters.CalculoFreteAdapter;
-import br.com.sigabem.adapters.CalculoFreteEntityControllerAdapter;
-import br.com.sigabem.adapters.CalculoFreteServiceAdapter;
 import br.com.sigabem.controller.contracts.CalculoFreteController;
-import br.com.sigabem.controller.entity.CalculoFreteControllerEntity;
-import br.com.sigabem.db.entity.CalculoFreteEntity;
-import br.com.sigabem.service.entity.CalculoFrete;
+import br.com.sigabem.dto.request.CalculoFreteDTO;
+import br.com.sigabem.dto.request.CalculoFreteInputDTO;
+import br.com.sigabem.service.CalculoFreteService;
 import br.com.sigabem.service.exception.CalculoFreteException;
 import br.com.sigabem.dto.response.MessageResponseDTO;
 import br.com.sigabem.service.impl.CalculoFreteServiceImpl;
@@ -19,36 +16,26 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/frete")
 @Controller
 public class CalculoFreteControllerImpl implements CalculoFreteController {
 
-    private CalculoFreteServiceImpl calculoFreteServiceImpl;
-
     @Autowired
-    private CalculoFreteControllerImpl(CalculoFreteServiceImpl calculoFreteServiceImpl){
-        this.calculoFreteServiceImpl = calculoFreteServiceImpl;
-    }
+    private CalculoFreteService calculoFreteServiceImpl;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Override
-    public MessageResponseDTO createCalculoFrete(@RequestBody @Valid CalculoFreteControllerEntity calculoFreteControllerEntity) throws JSONException, IOException {
-        CalculoFreteServiceAdapter calculoFreteServiceAdapter = new CalculoFreteServiceAdapter(calculoFreteControllerEntity);
-        return calculoFreteServiceImpl.createCalculoFrete(calculoFreteServiceAdapter.getCalculoFrete());
+    public MessageResponseDTO createCalculoFrete(@RequestBody @Valid CalculoFreteInputDTO calculoFreteInputDTO) throws JSONException, IOException {
+        return calculoFreteServiceImpl.createCalculoFrete(calculoFreteInputDTO);
     }
 
     @GetMapping
     @Override
-    public List<CalculoFreteControllerEntity> listAll(){
-        List<CalculoFrete> allFretes = calculoFreteServiceImpl.listAll();
-        CalculoFreteEntityControllerAdapter calculoFreteEntityControllerAdapter = new CalculoFreteEntityControllerAdapter(allFretes);
-        return allFretes.stream()
-                .map(calculoFreteEntityControllerAdapter::convertCalculoFreteParaCalculoFreteControllerEntity)
-                .collect(Collectors.toList());
+    public List<CalculoFreteDTO> listAll(){
+        return calculoFreteServiceImpl.listAll();
     }
 
     @DeleteMapping("/{id}")
@@ -60,8 +47,7 @@ public class CalculoFreteControllerImpl implements CalculoFreteController {
 
     @PutMapping("/{id}")
     @Override
-    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid CalculoFreteControllerEntity calculoFreteControllerEntity) throws CalculoFreteException {
-        CalculoFreteServiceAdapter calculoFreteServiceAdapter = new CalculoFreteServiceAdapter(calculoFreteControllerEntity);
-        return calculoFreteServiceImpl.updateById(id,calculoFreteServiceAdapter.getCalculoFrete());
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid CalculoFreteInputDTO calculoFreteInputDTO) throws CalculoFreteException {
+        return calculoFreteServiceImpl.updateById(id,calculoFreteInputDTO);
     }
 }

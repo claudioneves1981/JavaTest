@@ -1,11 +1,9 @@
 package br.com.sigabem.adapters;
 
-import br.com.sigabem.controller.entity.CalculoFreteControllerEntity;
-import br.com.sigabem.db.entity.CalculoFreteEntity;
-import br.com.sigabem.service.entity.CalculoFrete;
+import br.com.sigabem.dto.request.CalculoFreteInputDTO;
+import br.com.sigabem.db.entity.CalculoFrete;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,41 +13,41 @@ public class CalculoFreteServiceAdapter {
     private CalculoFrete calculoFrete;
     private List<CalculoFrete> calculoFretes;
 
-    public CalculoFreteServiceAdapter(List<CalculoFreteEntity> calculoFreteEntityList){
-        this.calculoFretes = convertListEntityEmListCalculoFrete(calculoFreteEntityList);
+    public CalculoFreteServiceAdapter(List<CalculoFrete> calculoFreteList){
+        this.calculoFretes = convertListEntityEmListCalculoFrete(calculoFreteList);
     }
 
-    public CalculoFreteServiceAdapter(CalculoFreteControllerEntity calculoFreteControllerEntity){
-        this.calculoFrete = convertCalculoFreteControllerEntityEmCalculoFrete(calculoFreteControllerEntity);
+    public CalculoFreteServiceAdapter(CalculoFreteInputDTO calculoFreteInputDTO){
+        this.calculoFrete = convertCalculoFreteControllerEntityEmCalculoFrete(calculoFreteInputDTO);
     }
 
-    private List<CalculoFrete> convertListEntityEmListCalculoFrete(List<CalculoFreteEntity> calculoFreteEntityList){
+    private List<CalculoFrete> convertListEntityEmListCalculoFrete(List<CalculoFrete> calculoFreteList){
         calculoFretes = new ArrayList<>();
-        for(CalculoFreteEntity calculoFreteEntity : calculoFreteEntityList){
-            calculoFretes.add(convertCalculoFreteEntityEmCalculoFrete(calculoFreteEntity));
+        for(CalculoFrete calculoFrete : calculoFreteList){
+            calculoFretes.add(convertCalculoFreteEntityEmCalculoFrete(calculoFrete));
         }
         return calculoFretes;
     }
 
-    private CalculoFrete convertCalculoFreteEntityEmCalculoFrete(CalculoFreteEntity calculoFreteEntity){
+    private CalculoFrete convertCalculoFreteEntityEmCalculoFrete(CalculoFrete calculoFrete){
         return CalculoFrete.builder()
-                .id(calculoFreteEntity.getId())
-                .peso(calculoFreteEntity.getPeso())
-                .cepOrigem(calculoFreteEntity.getCepOrigem())
-                .cepDestino(calculoFreteEntity.getCepDestino())
-                .vlTotalFrete(calculoFreteEntity.getVlTotalFrete())
-                .dataPrevistaEntrega(calculoFreteEntity.getDataPrevistaEntrega())
-                .dataConsulta(calculoFreteEntity.getDataConsulta())
-                .nomeDestinatario(calculoFreteEntity.getNomeDestinatario())
+                .id(calculoFrete.getId())
+                .peso(calculoFrete.getPeso())
+                .cepOrigem(calculoFrete.getCepOrigem())
+                .cepDestino(calculoFrete.getCepDestino())
+                .vlTotalFrete(calculoFrete.getVlTotalFrete())
+                .dataPrevistaEntrega(calculoFrete.getDataPrevistaEntrega())
+                .dataConsulta(calculoFrete.getDataConsulta())
+                .nomeDestinatario(calculoFrete.getNomeDestinatario())
                 .build();
     }
 
-    private CalculoFrete convertCalculoFreteControllerEntityEmCalculoFrete(CalculoFreteControllerEntity calculoFreteControllerEntity){
+    private CalculoFrete convertCalculoFreteControllerEntityEmCalculoFrete(CalculoFreteInputDTO calculoFreteInputDTO){
         return CalculoFrete.builder()
-                .peso(calculoFreteControllerEntity.getPeso())
-                .cepOrigem(calculoFreteControllerEntity.getCepOrigem())
-                .cepDestino(calculoFreteControllerEntity.getCepDestino())
-                .nomeDestinatario(calculoFreteControllerEntity.getNomeDestinatario())
+                .peso(calculoFreteInputDTO.getPeso())
+                .cepOrigem(calculoFreteInputDTO.getCepOrigem())
+                .cepDestino(calculoFreteInputDTO.getCepDestino())
+                .nomeDestinatario(calculoFreteInputDTO.getNomeDestinatario())
                 .build();
     }
 }

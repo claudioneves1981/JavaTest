@@ -1,4 +1,4 @@
-package br.com.sigabem.controller.entity;
+package br.com.sigabem.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,9 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CalculoFreteControllerEntity {
+public class CalculoFreteInputDTO {
+
+    private Long id;
 
     @NotEmpty
     private Double peso;

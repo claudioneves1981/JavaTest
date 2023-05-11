@@ -1,6 +1,6 @@
 package br.com.sigabem.adapters;
 
-import br.com.sigabem.db.entity.CalculoFreteEntity;
+import br.com.sigabem.db.entity.CalculoFrete;
 import br.com.sigabem.dto.request.CalculoFreteDTO;
 import lombok.Data;
 
@@ -13,29 +13,32 @@ public class CalculoFreteDTOAdapter {
     private List<CalculoFreteDTO> calculoFretesDTO;
     private CalculoFreteDTO calculoFreteDTO;
 
-    public CalculoFreteDTOAdapter(List<CalculoFreteEntity> calculoFretesEntity){
-        calculoFretesDTO = convertListCalculoFreteEntityParaListCalculoFreteDTO(calculoFretesEntity);
+    public CalculoFreteDTOAdapter(List<CalculoFrete> calculoFretesEntity){
+        calculoFretesDTO = toDTOList(calculoFretesEntity);
     }
 
-    public CalculoFreteDTOAdapter(CalculoFreteEntity calculoFreteEntity){
-        calculoFreteDTO = convertCalculoFreteEntityParaCalculoFreteDTO(calculoFreteEntity);
+    public CalculoFreteDTOAdapter(CalculoFrete calculoFrete){
+        calculoFreteDTO = toDTO(calculoFrete);
     }
 
-    public List<CalculoFreteDTO> convertListCalculoFreteEntityParaListCalculoFreteDTO(List<CalculoFreteEntity> calculoFretesEntity){
+    public List<CalculoFreteDTO> toDTOList(List<CalculoFrete> calculoFretesEntity){
         List<CalculoFreteDTO> calculoFretesDTO = new ArrayList<>();
-        for(CalculoFreteEntity calculoFreteEntity: calculoFretesEntity){
-            calculoFretesDTO.add(convertCalculoFreteEntityParaCalculoFreteDTO(calculoFreteEntity));
+        for(CalculoFrete calculoFrete : calculoFretesEntity){
+            calculoFretesDTO.add(toDTO(calculoFrete));
         }
         return calculoFretesDTO;
     }
 
-    public CalculoFreteDTO convertCalculoFreteEntityParaCalculoFreteDTO(CalculoFreteEntity calculoFreteEntity){
+    public CalculoFreteDTO toDTO(CalculoFrete calculoFrete){
         return CalculoFreteDTO.builder()
-                .id(calculoFreteEntity.getId())
-                .peso(calculoFreteEntity.getPeso())
-                .cepOrigem(calculoFreteEntity.getCepOrigem())
-                .cepDestino(calculoFreteEntity.getCepDestino())
-                .nomeDestinatario(calculoFreteEntity.getNomeDestinatario())
+                .id(calculoFrete.getId())
+                .peso(calculoFrete.getPeso())
+                .cepOrigem(calculoFrete.getCepOrigem())
+                .cepDestino(calculoFrete.getCepDestino())
+                .nomeDestinatario(calculoFrete.getNomeDestinatario())
+                .dataConsulta(calculoFrete.getDataConsulta())
+                .vlTotalFrete(calculoFrete.getVlTotalFrete())
+                .dataPrevistaEntrega(calculoFrete.getDataPrevistaEntrega())
                 .build();
     }
 }

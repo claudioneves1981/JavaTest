@@ -24,7 +24,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CalculoFreteEntity {
+public class CalculoFrete {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="SEQ_CALCULO_FRETE")

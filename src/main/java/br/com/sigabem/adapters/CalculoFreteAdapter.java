@@ -1,8 +1,7 @@
 package br.com.sigabem.adapters;
 
-import br.com.sigabem.db.entity.CalculoFreteEntity;
+import br.com.sigabem.db.entity.CalculoFrete;
 import br.com.sigabem.dto.request.CalculoFreteDTO;
-import br.com.sigabem.service.entity.CalculoFrete;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -13,22 +12,23 @@ public class CalculoFreteAdapter {
 
     private CalculoFrete calculoFrete;
     private List<CalculoFrete> calculoFretes;
+
     public CalculoFreteAdapter(CalculoFreteDTO calculoFreteDTO){
         calculoFrete = converteCalculoFreteDTOParaCalculoFrete(calculoFreteDTO);
     }
 
-    public CalculoFreteAdapter(List<CalculoFreteEntity> calculoFreteEntity){
-        calculoFretes= convertListCalculoFreteEntityParaListCalculoFrete(calculoFreteEntity);
+    public CalculoFreteAdapter(List<CalculoFrete> calculoFrete){
+        calculoFretes= convertListCalculoFreteEntityParaListCalculoFrete(calculoFrete);
     }
 
-    public CalculoFreteAdapter(CalculoFreteEntity calculoFreteEntity){
-        calculoFrete = convertCalculoFreteEntityParaCalculoFrete(calculoFreteEntity);
+    public CalculoFreteAdapter(CalculoFrete calculoFrete){
+        this.calculoFrete = convertCalculoFreteEntityParaCalculoFrete(calculoFrete);
     }
 
-    public List<CalculoFrete> convertListCalculoFreteEntityParaListCalculoFrete(List<CalculoFreteEntity> calculoFretesEntity){
+    public List<CalculoFrete> convertListCalculoFreteEntityParaListCalculoFrete(List<CalculoFrete> calculoFretesEntity){
         List<CalculoFrete> calculoFretes= new ArrayList<>();
-        for(CalculoFreteEntity calculoFreteEntity: calculoFretesEntity){
-            calculoFretes.add(convertCalculoFreteEntityParaCalculoFrete(calculoFreteEntity));
+        for(CalculoFrete calculoFrete : calculoFretesEntity){
+            calculoFretes.add(convertCalculoFreteEntityParaCalculoFrete(calculoFrete));
         }
         return calculoFretes;
     }
@@ -43,16 +43,16 @@ public class CalculoFreteAdapter {
                 .build();
     }
 
-    public CalculoFrete convertCalculoFreteEntityParaCalculoFrete(CalculoFreteEntity calculoFreteEntity) {
+    public CalculoFrete convertCalculoFreteEntityParaCalculoFrete(CalculoFrete calculoFrete) {
         return CalculoFrete.builder()
-                .id(calculoFreteEntity.getId())
-                .peso(calculoFreteEntity.getPeso())
-                .cepOrigem(calculoFreteEntity.getCepOrigem())
-                .cepDestino(calculoFreteEntity.getCepDestino())
-                .nomeDestinatario(calculoFreteEntity.getNomeDestinatario())
-                .dataConsulta(calculoFreteEntity.getDataConsulta())
-                .vlTotalFrete(calculoFreteEntity.getVlTotalFrete())
-                .dataPrevistaEntrega(calculoFreteEntity.getDataPrevistaEntrega())
+                .id(calculoFrete.getId())
+                .peso(calculoFrete.getPeso())
+                .cepOrigem(calculoFrete.getCepOrigem())
+                .cepDestino(calculoFrete.getCepDestino())
+                .nomeDestinatario(calculoFrete.getNomeDestinatario())
+                .dataConsulta(calculoFrete.getDataConsulta())
+                .vlTotalFrete(calculoFrete.getVlTotalFrete())
+                .dataPrevistaEntrega(calculoFrete.getDataPrevistaEntrega())
                 .build();
     }
 }
